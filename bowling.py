@@ -1,16 +1,15 @@
 # bowling
-
 SPARE = '/'
 STRIKE = 'X'
 MAX_FRAMES = 10
 
 
-def get_frames_from_expression(roll_sequence):
+def get_frames_from_expression(frames_expression):
     """
     >>> get_frames_from_expression("X 45 4/ 32")
     ['X', '45', '4/', '32']
     """
-    return roll_sequence.split()
+    return frames_expression.split()
 
 
 def simple_frame_score(frame):
@@ -22,7 +21,6 @@ def simple_frame_score(frame):
     >>> simple_frame_score("3/")
     10
     """
-
     if frame[-1] in (STRIKE, SPARE):
         simple_score = 10
     else:
@@ -45,24 +43,12 @@ def simple_first_roll_score(frame):
         return int(first_roll)
 
 
-def calculate_simple_frame_scores(frames):
-    # I would probably have skipped the `if` and done:
-    # relevant_frames = frames[:MAX_FRAMES]
-    # simple_frame_scores = [simple_frame_score(frame) for frame in relevant_frames]
-
-    simple_frame_scores = [simple_frame_score(frame) for frame in frames]
-    if len(frames) > MAX_FRAMES:
-            simple_frame_scores.pop()
-    return simple_frame_scores
-
-
 def calculate_simple_score(frames):
-    # I would probably have skipped the `if` and done:
-    # relevant_frames = frames[:MAX_FRAMES]
-    # simple_frame_scores = [simple_frame_score(frame) for frame in relevant_frames]
 
-    simple_frame_scores = [simple_frame_score(frame) for frame in frames]
-    simple_score = sum(simple_frame_scores[:MAX_FRAMES])
+    relevant_frames = frames[:MAX_FRAMES]
+    
+    simple_frame_scores = [simple_frame_score(frame) for frame in relevant_frames]
+    simple_score = sum(simple_frame_scores)
 
     return simple_score
 
@@ -73,6 +59,8 @@ def calculate_bonus_points(frames):
     12
     >>> calculate_bonus_points(['X', '45', '4/', '32', 'X', '22'])
     16
+    >>> calculate_bonus_points(9*['11'] + 2*['X'])
+    10
     """
     bonus_points = 0
 
