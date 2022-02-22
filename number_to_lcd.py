@@ -5,17 +5,25 @@ HORIZONTAL = '_'
 FILLER = ' '
 
 
-class LCD_line():
+class LCDHorizontalTriple():
 
 
-    def __init__(self, first, middle, final):
-        self.first = first
+    def __init__(self, left, middle, right):
+        self.first = left
         self.middle = middle
-        self.final = final
+        self.final = right
         
 
+class LCDElements():
 
-class LCD_char():
+
+    def __init__(self, top: LCDHorizontalTriple, middle: LCDHorizontalTriple, bottom: LCDHorizontalTriple):
+        self.top = top
+        self.middle = middle
+        self.bottom = bottom        
+
+
+class LCDChar():
 
 
     def __init__(self, char, lcd_lines, scale=[1,1]):
