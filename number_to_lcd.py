@@ -35,7 +35,7 @@ class LCDChar():
     @staticmethod
     def x_scale_lines(lcd_lines, x_scale):
         """
-        >>> print_lcd_lines(LCD_char.x_scale_lines(['___'],3))
+        >>> print_lcd_lines(LCDChar.x_scale_lines(['___'],3))
         _____
         """
         scaled_lcd_lines = lcd_lines.copy()
@@ -51,7 +51,7 @@ class LCDChar():
     @staticmethod
     def y_scale_lines(lcd_lines, y_scale):
         """
-        >>> print_lcd_lines(LCD_char.y_scale_lines([' ','| |','|_|'],2))
+        >>> print_lcd_lines(LCDChar.y_scale_lines([' ','| |','|_|'],2))
         <BLANKLINE>
         | |
         | |
@@ -60,7 +60,7 @@ class LCDChar():
         """
         scaled_lcd_lines = lcd_lines.copy()
 
-        bottom_element_extension = [lcd_lines[2].replace(HORIZONTAL, FILLER)]*(y_scale-1) # ['','','']
+        bottom_element_extension = [lcd_lines[2].replace(HORIZONTAL, FILLER)]*(y_scale-1)
         middle_element_extension = [lcd_lines[1].replace(HORIZONTAL, FILLER)]*(y_scale-1)
 
         scaled_lcd_lines = [lcd_lines[0]] + middle_element_extension + [lcd_lines[1]] + bottom_element_extension + [lcd_lines[2]]
@@ -71,7 +71,7 @@ class LCDChar():
     @staticmethod
     def scale_lines(lcd_lines, scale):
         """
-        >>> print_lcd_lines(LCD_char.scale_lines([' _ ','| |','|_|'], [3,2]))
+        >>> print_lcd_lines(LCDChar.scale_lines([' _ ','| |','|_|'], [3,2]))
          ___ 
         |   |
         |   |
@@ -81,31 +81,26 @@ class LCDChar():
         x_scale_factor = scale[0]
         y_scale_factor = scale[1]
 
-        scaled_lcd_lines = LCD_char.y_scale_lines(LCD_char.x_scale_lines(lcd_lines, x_scale_factor), y_scale_factor)
-#        scaled_lcd_lines = LCD_char.x_scale_lines(lcd_lines, x_scale_factor)
+        scaled_lcd_lines = LCDChar.y_scale_lines(LCDChar.x_scale_lines(lcd_lines, x_scale_factor), y_scale_factor)
 
         return scaled_lcd_lines
 
 
 
-
-one   = LCD_char('1', ['   ', '  |', '  |'])
-two   = LCD_char('2', [' _ ', ' _|', '|_ '])
-three = LCD_char('3', [' _ ', ' _|', ' _|'])
-four  = LCD_char('4', ['   ', '|_|', '  |'])
-five  = LCD_char('5', [' _ ', '|_ ', ' _|'])
-six   = LCD_char('6', [' _ ', '|_ ', '|_|'])
-seven = LCD_char('7', [' _ ', '  |', '  |'])
-eight = LCD_char('8', [' _ ', '|_|', '|_|'])
-nine  = LCD_char('9', [' _ ', '|_|', ' _|'])
-zero  = LCD_char('0', [' _ ', '| |', '|_|'])
+one   = LCDChar('1', ['   ', '  |', '  |'])
+two   = LCDChar('2', [' _ ', ' _|', '|_ '])
+three = LCDChar('3', [' _ ', ' _|', ' _|'])
+four  = LCDChar('4', ['   ', '|_|', '  |'])
+five  = LCDChar('5', [' _ ', '|_ ', ' _|'])
+six   = LCDChar('6', [' _ ', '|_ ', '|_|'])
+seven = LCDChar('7', [' _ ', '  |', '  |'])
+eight = LCDChar('8', [' _ ', '|_|', '|_|'])
+nine  = LCDChar('9', [' _ ', '|_|', ' _|'])
+zero  = LCDChar('0', [' _ ', '| |', '|_|'])
 
 
 digits = [one, two, three, four, five, six, seven, eight, nine, zero]
-
-
 digits_dict = {digit.char: digit.lcd_lines for digit in digits}
-
 
 
 
@@ -120,7 +115,8 @@ def print_lcd_lines(lcd_lines):
         print(line)
 
 
-def number_to_LCD(number):
+
+def number_to_LCD(number, scale = [1,1]):
     """
     >>> number_to_LCD(123456789)
         _  _     _  _  _  _  _ 
@@ -128,11 +124,11 @@ def number_to_LCD(number):
       ||_  _|  | _||_|  ||_| _|
     """
     number_str = str(number)
-    lcd_lines = ['', '', '']
+    lcd_lines = [' ']*3*scale[1]
 
     for digit in number_str:
-        lcd_digit_lines = digits_dict[digit]
-        for index, line in enumerate(lcd_lines):
+        lcd_digit_lines = LCDChar.scale_lines(digits_dict[digit], scale)
+        for index, line in enumerate(lcd_digit_lines):
             lcd_lines[index] += lcd_digit_lines[index]
 
     print_lcd_lines(lcd_lines)
