@@ -1,62 +1,56 @@
 #roman_numerals
 
+
 MAX_NUMERAL = 3999
 
+def roman_numeral_base_symbols():
 
-SIMPLE_NUMERALS = {
-    1:'I',
-    5:'V',
-    10:'X',
-    50:'L',
-    100:'C',
-    500:'D',
-    1000:'M'
+    simple_numerals = {
+        1:'I',
+        5:'V',
+        10:'X',
+        50:'L',
+        100:'C',
+        500:'D',
+        1000:'M'
     }
 
 
-SUBTRACTED_NUMERALS = {
-    4:'IV',
-    9: 'IX',
-    40: 'XL',
-    45: 'VL',
-    90: 'XC',
-    400: 'CD',
-    450: 'LD',
-    900: 'CM',
-}
+    subtracted_numerals = {
+        4:'IV',
+        9: 'IX',
+        40: 'XL',
+        45: 'VL',
+        90: 'XC',
+        400: 'CD',
+        450: 'LD',
+        900: 'CM',
+    }
 
-sorted_keys = sorted(list(SUBTRACTED_NUMERALS) + list(SIMPLE_NUMERALS), reverse=True)
+    sorted_keys = sorted(list(subtracted_numerals) + list(simple_numerals), reverse=True)
 
-NUMERALS = {}
+    numerals = {}
 
-for key in sorted_keys:
-    try:
-        NUMERALS[key] = SIMPLE_NUMERALS[key]
-    except KeyError:
-        NUMERALS[key] = SUBTRACTED_NUMERALS[key]
-    except KeyError:
-        pass
+    for key in sorted_keys:
+        try:
+            numerals[key] = simple_numerals[key]
+        except KeyError:
+            numerals[key] = subtracted_numerals[key]
+        except KeyError:
+            pass
+    
+    return numerals
 
 
-
-print(sorted_keys)
-
+NUMERALS = roman_numeral_base_symbols()
  
-
-def next_key(key):
-    """
-    >>> next_key(1)
-    5
-    >>>> next_key(5)
-    10
-    """
-#    keys = NUMERALS.keys()
- #   if key in keys:
-
-    pass
 
 
 def highest_numeral_less_than(number):
+    """
+    >>> highest_numeral_less_than(30)
+    10
+    """
     for key in NUMERALS:
         if key < number:
             return key
@@ -75,7 +69,7 @@ def number_to_numeral(number):
     >>> number_to_numeral(49)
     'XLIX'
     >>> number_to_numeral(948)
-    'LMXCVIII'
+    'CMVLIII'
     """
     if number > MAX_NUMERAL:
         return large_number_to_numeral(number)
