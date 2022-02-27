@@ -9,8 +9,8 @@ class Turnstyle():
 
     def __init__(
         self, 
-        is_locked = True,
-        is_activated = True,
+        is_locked = True, # read only
+        is_activated = True, # read only
         alarm_sound = 'BZZZZZZZZZZZZZZZZZ', 
         thank_you_message = 'Thanks!'
     ):
@@ -33,12 +33,12 @@ class Turnstyle():
         return self
 
 
-    def lock(self):
+    def lock(self): # private
         self.is_locked = True
         return self
 
 
-    def unlock(self):
+    def unlock(self): # private
         self.is_locked = False
         return self
 
@@ -51,7 +51,7 @@ class Turnstyle():
         print(self.thank_you_message)
 
 
-    def print_state(self):
+    def print_state(self): # public
         """
         >>> Turnstyle(is_locked=True).print_state()
         ACTIVE, LOCKED
@@ -65,7 +65,7 @@ class Turnstyle():
         print(state)
 
 
-    def insert_coin(self):
+    def insert_coin(self): # public
         """
         >>> Turnstyle().lock().insert_coin().print_state()
         ACTIVE, UNLOCKED
@@ -83,7 +83,7 @@ class Turnstyle():
         return self
 
 
-    def pass_through(self):
+    def pass_through(self): # public
         """
         >>> Turnstyle(alarm_sound = 'Z').pass_through().print_state()
         Z
@@ -118,7 +118,7 @@ def test_turnstile():
     print('Try to pass through')
     test_turnstile.pass_through()
     test_turnstile.print_state()
-    print('Insert coint')
+    print('Insert coin')
     test_turnstile.insert_coin()
     print('Deactivate turnstile')
     test_turnstile.deactivate()
