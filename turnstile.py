@@ -1,10 +1,10 @@
-#turnstile
+import unittest
+
 
 def lights_on(is_on):
     pass
 
-#audi.show()     # same output as car.show(audi)
-#ferrari.show()  # same output as car.show(ferrari)
+
 class Turnstyle():
 
     def __init__(
@@ -33,25 +33,25 @@ class Turnstyle():
         return self
 
 
-    def lock(self): # private
+    def _lock(self): # private
         self.is_locked = True
         return self
 
 
-    def unlock(self): # private
+    def _unlock(self): # private
         self.is_locked = False
         return self
 
 
-    def sound_alarm(self):
+    def _sound_alarm(self):
         print(self.alarm_sound)
 
 
-    def print_thanks(self):
+    def _print_thanks(self):
         print(self.thank_you_message)
 
 
-    def print_state(self): # public
+    def print_state(self):
         """
         >>> Turnstyle(is_locked=True).print_state()
         ACTIVE, LOCKED
@@ -65,7 +65,7 @@ class Turnstyle():
         print(state)
 
 
-    def insert_coin(self): # public
+    def insert_coin(self):
         """
         >>> Turnstyle().lock().insert_coin().print_state()
         ACTIVE, UNLOCKED
@@ -76,14 +76,14 @@ class Turnstyle():
         if not self.is_activated:
             return
         elif not self.is_locked:
-            self.print_thanks()
+            self._print_thanks()
         else:
-            self.unlock()
+            self._unlock()
 
         return self
 
 
-    def pass_through(self): # public
+    def pass_through(self):
         """
         >>> Turnstyle(alarm_sound = 'Z').pass_through().print_state()
         Z
@@ -98,14 +98,50 @@ class Turnstyle():
         INACTIVE, LOCKED
         """
         if self.is_locked or not self.is_activated:
-            self.sound_alarm()
+            self._sound_alarm()
 
         self.is_locked = True
         return self
 
 
-# Only these methods should be exposed.  Other ones are internal
+class TestTurnstile(unittest.TestCase):
+    
+    
+    test_turnstile = Turnstyle(is_locked=False, alarm_sound='ZZZ')
+    
+
+    def test_deactivate(self):
+        self.test_turnstile.deactivate()
+        self.assertTrue(self.test_turnstile.is_locked)
+
+
+    def test_activate(self):
+        self.test_turnstile.activate()
+        self.assertFalse(self.test_turnstile.is_locked)
+
+
+    def test_entrance(self):
+        self.test_turnstile.activate()
+        self.test_turnstile.insert_coin()
+        self.assertFalse(self.test_turnstile.is_locked)
+        self.test_turnstile.pass_through()
+        self.assertTrue(self.test_turnstile.is_locked)
+
+
+    def test_alarm(self):
+        self.test_turnstile.deactivate()
+        self.test_turnstile.pass_through()
+        self.test_turnstile.activate()
+        self.test_turnstile.pass_through()
+        self.test_turnstile.pass_through()
+        self.assertTrue(self.test_turnstile.is_locked)
+
+if __name__ == 'MAIN':
+    unittest.main()
+
+
 def test_turnstile():
+
     test_turnstile = Turnstyle(is_locked=False, alarm_sound='ZZZ')
     print('New turnstile is unlocked')
     test_turnstile.print_state()
